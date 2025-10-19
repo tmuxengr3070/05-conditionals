@@ -1,26 +1,55 @@
-// Ask the user for the current weather
-const weather = prompt("What is the weather like today? (sunny, rainy, cloudy, snowy)");
+// Wait for the DOM to load before running the script
+document.addEventListener("DOMContentLoaded", function () {
+    // Get the form and suggestion section from the HTML
+    const weatherForm = document.getElementById("weatherForm");
+    const suggestionSection = document.getElementById("suggestion");
 
-// Create a variable to hold the message
-let message = "";
+    // Add an event listener for the form submission
+    weatherForm.addEventListener("submit", function (event) {
+        // Prevent the form from refreshing the page
+        event.preventDefault();
 
-// Use if-else statements to decide what to bring
-if (weather === "sunny") {
-    // Suggest sunglasses for sunny weather
-    message = `It's sunny! 😎 Don't forget your sunglasses.`;
-} else if (weather === "rainy") {
-    // Suggest an umbrella for rainy weather
-    message = `It's rainy! 🌧️ Bring an umbrella.`;
-} else if (weather === "cloudy") {
-    // Suggest a light jacket for cloudy weather
-    message = `It's cloudy! ☁️ You might want a light jacket.`;
-} else if (weather === "snowy") {
-    // Suggest warm clothes for snowy weather
-    message = `It's snowy! ❄️ Wear warm clothes.`;
-} else {
-    // If the input is not recognized
-    message = `I don't know that weather. 🤔 Please enter sunny, rainy, cloudy, or snowy.`;
-}
+        // Get the selected weather and temperature from the form
+        const weather = document.getElementById("weather").value;
+        const temperature = document.getElementById("temperature").value;
 
-// Show the message to the user
-alert(message);
+        // Create a variable to hold the message
+        let message = "";
+
+        // Check if weather is cloudy or rainy
+        if (weather === "cloudy" || weather === "rainy") {
+            // Suggest a light jacket for cloudy or rainy weather
+            message = `It's ${weather}! A light jacket might be a good idea.`;
+        } else if (weather === "sunny") {
+            // Suggest sunglasses for sunny weather
+            message = `It's sunny! 😎 Don't forget your sunglasses.`;
+        } else if (weather === "snowy") {
+            // Suggest warm clothes for snowy weather
+            message = `It's snowy! ❄️ Wear warm clothes.`;
+        } else if (weather === "windy") {
+            // Suggest a windbreaker for windy weather
+            message = `It's windy! 💨 A windbreaker is a good idea.`;
+        } else {
+            // If the input is not recognized
+            message = `I don't know that weather. 🤔 Please select a weather type.`;
+        }
+
+        // Add a suggestion based on the temperature, if provided
+        if (temperature) {
+            // Convert the temperature to a number
+            const tempNum = Number(temperature);
+
+            // Suggest a warm jacket if temperature is below 50°F
+            if (tempNum < 50) {
+                message += ` It's chilly! 🧥 Wear a warm jacket.`;
+            } else if (tempNum <= 40) {
+                message += ` It's pretty cold! 🧤 Dress warmly.`;
+            } else if (tempNum >= 85) {
+                message += ` It's hot outside! 🥤 Stay hydrated.`;
+            }
+        }
+
+        // Show the message in the suggestion section
+        suggestionSection.innerHTML = `<p>${message}</p>`;
+    });
+});
